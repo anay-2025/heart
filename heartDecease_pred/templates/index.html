@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Heart Disease Predictor</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="container">
+
+    <div class="glass">
+
+        <h1 class="title">
+            Heart Disease Predictor
+        </h1>
+
+        <p class="subtitle">
+            Predict whether a patient is at risk of heart disease using
+            Machine Learning.
+        </p>
+
+        <div class="info-banner">
+            <span>
+                <strong>Quick Tip:</strong>
+                Default values represent normal healthy clinical measurements.
+                You can simply enter your <strong>Age</strong> and <strong>Sex</strong>,
+                or modify the other fields if you know your medical reports.
+            </span>
+
+        </div>
+
+        <form id="predictForm">
+
+            <div class="grid">
+
+                <!-- Age -->
+
+                <div class="input-box">
+
+                    <label>Age</label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        placeholder="Enter Your Age"
+                        required>
+
+                </div>
+
+                <!-- Sex -->
+
+                <div class="input-box">
+
+                    <label>Sex</label>
+
+                    <select id="sex">
+
+                        <option value="1" selected>Male</option>
+                        <option value="0">Female</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Chest Pain -->
+
+                <div class="input-box">
+
+                    <label>
+                        Chest Pain Type
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Type of chest pain experienced by the patient.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="cp">
+
+                        <option value="0" selected>Typical Angina</option>
+                        <option value="1">Atypical Angina</option>
+                        <option value="2">Non-anginal Pain</option>
+                        <option value="3">Asymptomatic</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Resting Blood Pressure -->
+
+                <div class="input-box">
+
+                    <label>
+                        Resting Blood Pressure
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Blood pressure measured while at rest (Normal ≈ 120 mmHg).
+                            </span>
+                        </span>
+                    </label>    
+
+                    <input
+                        type="number"
+                        id="trestbps"
+                        value="120"
+                        required>
+
+                </div>
+
+                <!-- Cholesterol -->
+
+                <div class="input-box">
+
+                    <label>
+                        Cholesterol
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Serum cholesterol level in mg/dL (Healthy ≈ 200).
+                            </span>
+                        </span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="chol"
+                        value="200"
+                        required>
+
+                </div>
+
+                <!-- Fasting Blood Sugar -->
+
+                <div class="input-box">
+
+                    <label>
+                        Fasting Blood Sugar >120
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Whether fasting blood sugar is greater than 120 mg/dL.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="fbs">
+
+                        <option value="0" selected>No</option>
+                        <option value="1">Yes</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Rest ECG -->
+
+                <div class="input-box">
+
+                    <label>
+                        Rest ECG
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Electrocardiogram results while resting.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="restecg">
+
+                        <option value="0" selected>Normal</option>
+                        <option value="1">ST-T Abnormality</option>
+                        <option value="2">LV Hypertrophy</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Maximum Heart Rate -->
+
+                <div class="input-box">
+
+                    <label>
+                        Maximum Heart Rate
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Highest heart rate achieved during exercise.
+                            </span>
+                        </span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="thalach"
+                        value="150"
+                        required>
+
+                </div>
+
+                <!-- Exercise Angina -->
+
+                <div class="input-box">
+
+                    <label>
+                        Exercise Angina
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Chest pain induced by physical exercise.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="exang">
+
+                        <option value="0" selected>No</option>
+                        <option value="1">Yes</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Old Peak -->
+
+                <div class="input-box">
+
+                    <label>
+                        Old Peak
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                ST depression induced by exercise compared to rest.
+                            </span>
+                        </span>
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.1"
+                        id="oldpeak"
+                        value="0"
+                        required>
+
+                </div>
+
+                <!-- Slope -->
+
+                <div class="input-box">
+
+                    <label>
+                        Slope
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Slope of the peak exercise ST segment.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="slope">
+
+                        <option value="0" selected>Upsloping</option>
+                        <option value="1">Flat</option>
+                        <option value="2">Downsloping</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Major Vessels -->
+
+                <div class="input-box">
+
+                    <label>
+                        Major Vessels
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Number of major blood vessels observed by fluoroscopy.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="ca">
+
+                        <option value="0" selected>0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+
+                    </select>
+
+                </div>
+
+                <!-- Thal -->
+
+                <div class="input-box full">
+
+                    <label>
+                        Thal
+                        <span class="tooltip">
+                            ⓘ
+                            <span class="tooltiptext">
+                                Result of the thalassemia test.
+                            </span>
+                        </span>
+                    </label>
+
+                    <select id="thal">
+
+                        <option value="3" selected>Normal</option>
+                        <option value="6">Fixed Defect</option>
+                        <option value="7">Reversible Defect</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="predict-btn">
+
+                Predict
+
+            </button>
+
+        </form>
+
+        <div
+            id="loading"
+            class="loading">
+
+            Predicting...
+
+        </div>
+
+        <div id="result" class="result">
+
+            <h2 id="prediction"></h2>
+
+            <p id="confidence"></p>
+
+            <p id="message"></p>
+
+        </div>
+
+        <footer>
+            <p>
+                @ Copyright anay_2026
+            </p>
+
+        </footer>
+    </div>
+
+    
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
